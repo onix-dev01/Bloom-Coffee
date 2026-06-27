@@ -1,0 +1,25 @@
+---
+description: Supabase auth, RLS, and client usage patterns
+globs: "src/lib/supabase/**,supabase/**"
+alwaysApply: false
+---
+
+# Supabase Patterns
+
+## Clients
+
+- Browser auth/forms: `createClient()` from `src/lib/supabase/client.ts`
+- Server Components & Server Actions: `createClient()` from `src/lib/supabase/server.ts`
+- Route protection: `src/middleware.ts` via `updateSession`
+
+## Security
+
+- RLS is the primary authorization layer — do not bypass with service role in app code
+- Admin writes require `profiles.role = 'admin'` (checked by RLS and `requireAdmin()`)
+- Service role key is only for `scripts/seed-admin.mjs`, never in the Next.js app
+
+## Schema
+
+- Migrations in `supabase/migrations/`
+- Order snapshots store drink/add-on names and prices at submit time
+- New auth users get `profiles.role = 'user'` via trigger

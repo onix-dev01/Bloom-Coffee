@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf7f2;
+  --foreground: #2c1810;
+  --surface: #ffffff;
+  --muted: #6b5344;
+  --border: #e8ddd0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand-50: #fbf4eb;
+  --color-brand-100: #f3e4d3;
+  --color-brand-200: #e6cdb0;
+  --color-brand-300: #d4ad85;
+  --color-brand-400: #c08d5c;
+  --color-brand-500: #a87143;
+  --color-brand-600: #8f5a35;
+  --color-brand-700: #75462c;
+  --color-brand-800: #5c3624;
+  --color-brand-900: #3d2418;
+  --color-success: #2d6a4f;
+  --color-danger: #b42318;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border bg-surface shadow-sm;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border bg-surface px-4 py-2.5 text-sm text-foreground outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border bg-surface px-4 py-2.5 text-sm font-medium text-foreground transition hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand-800 transition hover:bg-brand-50;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-xl bg-danger px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+}

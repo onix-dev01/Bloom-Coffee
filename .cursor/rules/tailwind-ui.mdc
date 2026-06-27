@@ -1,0 +1,33 @@
+---
+description: Tailwind UI patterns — use shared components and theme tokens
+globs: "**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Tailwind UI Rules
+
+## Theme
+
+Use brand tokens from `globals.css` (`brand-*`, `surface`, `muted`) instead of arbitrary hex values.
+
+## Components
+
+Always prefer shared UI primitives:
+
+- `Button` — variants: `primary`, `secondary`, `ghost`, `danger`
+- `Input`, `Label`, `Textarea` — form fields
+- `Card` — content containers
+- `Badge`, `Alert`, `Tabs` — status and navigation
+- `PageHeader`, `EmptyState` — page scaffolding
+
+## Layout
+
+- Mobile-first: stack on small screens, grid/sidebar on `md:` and up
+- Customer flows must remain readable on phone and desktop
+- Use consistent spacing: `gap-4`, `p-4`, `p-6` for sections
+
+## Avoid
+
+- One-off inline styles for buttons or inputs
+- Hard-coded colors outside the theme
+- Dark-mode-only layouts (light warm coffee shop aesthetic)

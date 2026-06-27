@@ -1,0 +1,28 @@
+---
+description: Bloom Coffee project standards — TypeScript, Server Actions, file layout
+alwaysApply: true
+---
+
+# Bloom Coffee — Project Standards
+
+## Stack
+
+- Next.js App Router under `src/app/`
+- Tailwind CSS v4 with theme tokens in `src/app/globals.css`
+- Supabase for auth and PostgreSQL persistence
+
+## Conventions
+
+- Use TypeScript strict mode; shared types live in `src/lib/types.ts`
+- Mutations use Server Actions in colocated `actions.ts` files
+- Reusable UI lives in `src/components/ui/` — do not duplicate button/input styles inline
+- Supabase clients: browser (`src/lib/supabase/client.ts`), server (`src/lib/supabase/server.ts`)
+- Never commit secrets; use `.env.local` and document vars in `.env.example`
+- Admin-only operations call `requireAdmin()` from the server module
+- Revalidate customer routes (`/`, `/order`) after admin menu changes
+
+## File naming
+
+- Components: PascalCase (`DrinkCard.tsx`)
+- Utilities: kebab-case or camelCase in `src/lib/`
+- Routes: lowercase with hyphens for segments (`add-ons`)
