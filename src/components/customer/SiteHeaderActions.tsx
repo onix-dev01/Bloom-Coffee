@@ -25,7 +25,7 @@ export function SiteHeaderActions({ isAdmin, isLoggedIn }: SiteHeaderActionsProp
     <div className="flex items-center gap-2 sm:gap-3">
       <CustomerNav isLoggedIn={isLoggedIn} />
       {isAdmin ? (
-        <Link href="/admin">
+        <Link href="/admin/orders">
           <Button variant="ghost">Admin</Button>
         </Link>
       ) : null}

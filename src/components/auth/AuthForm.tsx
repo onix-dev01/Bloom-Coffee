@@ -92,7 +92,7 @@ export function AuthForm() {
       profile?.role === "admin"
         ? redirectTo.startsWith("/admin")
           ? redirectTo
-          : "/admin"
+          : "/admin/orders"
         : redirectTo;
 
     router.push(destination);

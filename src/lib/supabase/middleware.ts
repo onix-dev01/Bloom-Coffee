@@ -68,7 +68,7 @@ export async function updateSession(request: NextRequest) {
       .single();
 
     const url = request.nextUrl.clone();
-    url.pathname = profile?.role === "admin" ? "/admin" : "/";
+    url.pathname = profile?.role === "admin" ? "/admin/orders" : "/";
     url.search = "";
     return NextResponse.redirect(url);
   }

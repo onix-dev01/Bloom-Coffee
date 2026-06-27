@@ -20,11 +20,6 @@ const links = [
     label: "Add-ons",
     isActive: (pathname: string) => pathname.startsWith("/admin/add-ons"),
   },
-  {
-    href: "/admin",
-    label: "Dashboard",
-    isActive: (pathname: string) => pathname === "/admin",
-  },
 ];
 
 export function AdminNav() {
