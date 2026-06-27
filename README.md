@@ -33,11 +33,11 @@ Copy the example env file and fill in your Supabase project values:
 cp .env.example .env.local
 ```
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (local seed script only) |
+| Variable                        | Description                               |
+| ------------------------------- | ----------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase project URL                      |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key                  |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Service role key (local seed script only) |
 
 ### 3. Run database migrations
 
@@ -57,10 +57,10 @@ This creates the seed admin and promotes their profile to `admin`.
 
 **Admin credentials:**
 
-| Field | Value |
-|-------|-------|
-| Email | `admin@bloomcoffee.com` |
-| Password | `BloomAdmin123!` |
+| Field    | Value                   |
+| -------- | ----------------------- |
+| Email    | `admin@bloomcoffee.com` |
+| Password | `BloomAdmin123!`        |
 
 Sign-up is available on `/admin/login`, but new accounts get the `user` role and cannot access admin routes until promoted.
 
@@ -74,13 +74,13 @@ Open [http://localhost:3000](http://localhost:3000) to build an order and [http:
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run Vitest unit tests |
+| Command              | Description                    |
+| -------------------- | ------------------------------ |
+| `npm run dev`        | Start development server       |
+| `npm run build`      | Production build               |
+| `npm run start`      | Start production server        |
+| `npm run lint`       | Run ESLint                     |
+| `npm test`           | Run Vitest unit tests          |
 | `npm run seed:admin` | Create/promote seed admin user |
 
 ## Deploy (Vercel)
@@ -90,23 +90,23 @@ Open [http://localhost:3000](http://localhost:3000) to build an order and [http:
 3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` as environment variables.
 4. Deploy. Run migrations and `npm run seed:admin` against your production Supabase project.
 
-**Live URL:** _Add your Vercel deployment URL here after deploying._
+**Live URL:** https://bloom-coffee-eight.vercel.app/
 
 ## Routes
 
-| Route | Access | Description |
-|-------|--------|-------------|
-| `/` | Public | Order builder with running total |
-| `/menu` | Public | Drink menu |
-| `/order` | Public | Redirects to `/` |
-| `/orders` | Signed-in | Your order history |
-| `/order/confirmation?id=` | Public | Order confirmation |
-| `/login` | Public | Staff sign in / sign up |
-| `/admin/login` | Public | Redirects to `/login` |
-| `/admin` | Admin | Redirects to orders |
-| `/admin/orders` | Admin | Recent customer orders |
-| `/admin/drinks` | Admin | Drinks CRUD |
-| `/admin/add-ons` | Admin | Add-ons CRUD |
+| Route                     | Access    | Description                      |
+| ------------------------- | --------- | -------------------------------- |
+| `/`                       | Public    | Order builder with running total |
+| `/menu`                   | Public    | Drink menu                       |
+| `/order`                  | Public    | Redirects to `/`                 |
+| `/orders`                 | Signed-in | Your order history               |
+| `/order/confirmation?id=` | Public    | Order confirmation               |
+| `/login`                  | Public    | Staff sign in / sign up          |
+| `/admin/login`            | Public    | Redirects to `/login`            |
+| `/admin`                  | Admin     | Redirects to orders              |
+| `/admin/orders`           | Admin     | Recent customer orders           |
+| `/admin/drinks`           | Admin     | Drinks CRUD                      |
+| `/admin/add-ons`          | Admin     | Add-ons CRUD                     |
 
 ## Trade-offs
 
@@ -140,5 +140,3 @@ supabase/migrations/     # SQL schema and seed data
 ```
 
 ---
-
-See [README submission section](#) above for Bloom Growth review instructions (private repo, PR, invite reviewer).
