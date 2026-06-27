@@ -27,11 +27,7 @@ npm install
 
 ### 2. Configure environment
 
-Copy the example env file and fill in your Supabase project values:
-
-```bash
-cp .env.example .env.local
-```
+Copy the env file
 
 | Variable                        | Description                               |
 | ------------------------------- | ----------------------------------------- |
@@ -39,21 +35,6 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key                  |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Service role key (local seed script only) |
 
-### 3. Run database migrations
-
-In the Supabase SQL editor, run these files in order:
-
-1. [`supabase/migrations/001_initial_schema.sql`](supabase/migrations/001_initial_schema.sql)
-2. [`supabase/migrations/002_seed_data.sql`](supabase/migrations/002_seed_data.sql)
-3. [`supabase/migrations/003_order_user_id.sql`](supabase/migrations/003_order_user_id.sql)
-
-### 4. Create the admin user
-
-```bash
-npm run seed:admin
-```
-
-This creates the seed admin and promotes their profile to `admin`.
 
 **Admin credentials:**
 
@@ -62,7 +43,6 @@ This creates the seed admin and promotes their profile to `admin`.
 | Email    | `admin@bloomcoffee.com` |
 | Password | `BloomAdmin123!`        |
 
-Sign-up is available on `/admin/login`, but new accounts get the `user` role and cannot access admin routes until promoted.
 
 ### 5. Start locally
 
@@ -70,7 +50,6 @@ Sign-up is available on `/admin/login`, but new accounts get the `user` role and
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to build an order and [http://localhost:3000/menu](http://localhost:3000/menu) to browse the drink list. Admin access: [http://localhost:3000/login](http://localhost:3000/login).
 
 ## Scripts
 
@@ -108,12 +87,6 @@ Open [http://localhost:3000](http://localhost:3000) to build an order and [http:
 | `/admin/drinks`           | Admin     | Drinks CRUD                      |
 | `/admin/add-ons`          | Admin     | Add-ons CRUD                     |
 
-## Trade-offs
-
-- **Server Actions over REST** — less boilerplate for this scope; RLS still enforces authorization.
-- **Admin role in `profiles`** — sign-up is enabled, but only `admin` role users pass middleware.
-- **Client-side cart until submit** — customers need no account; order persists on submit only. Sign in to save orders to your history.
-- **Price snapshots on orders** — drink/add-on names and prices are stored on each order so totals stay correct if the menu changes later.
 
 ## Testing
 
