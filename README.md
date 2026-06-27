@@ -51,6 +51,101 @@ npm run dev
 ```
 
 
+## Developer notes
+
+Use this section when onboarding a new machine, resetting a Supabase project, or debugging local setup.
+
+### From zero (checklist)
+
+1. Clone the repo and run `npm install`.
+2. Create a [Supabase](https://supabase.com) project (or use an existing one).
+3. Copy [`.env.example`](.env.example) to `.env.local` and paste your project URL, anon key, and service role key.
+4. Run all SQL migrations in order (see [Database migrations](#database-migrations)).
+5. Run `npm run seed:admin` to create the seed admin account.
+6. Run `npm run dev` and verify customer flow at `/` and admin login at `/login`.
+
+The app reads env vars from `.env.local` at runtime. The seed script also loads `.env` then `.env.local` from the project root if present.
+
+### Supabase project setup
+
+In the Supabase dashboard:
+
+1. **Project Settings → API** — copy `Project URL` and `anon` `public` key into `.env.local`.
+2. **Project Settings → API → service_role** — copy the service role key into `.env.local` as `SUPABASE_SERVICE_ROLE_KEY`. This key bypasses Row Level Security; it is only used by `scripts/seed-admin.mjs`, never in the Next.js app.
+3. **Authentication → Providers → Email** — email/password auth should be enabled (Supabase default).
+
+No Supabase CLI or local Docker stack is required for this project. Migrations are plain SQL files applied through the dashboard.
+
+### Environment variables
+
+| Variable | Required by | Description |
+| -------- | ----------- | ----------- |
+| `NEXT_PUBLIC_SUPABASE_URL` | App + seed script | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | App | Anon/public key (RLS applies) |
+| `SUPABASE_SERVICE_ROLE_KEY` | `npm run seed:admin` only | Service role key for creating/promoting the admin user |
+
+On Vercel, set only the two `NEXT_PUBLIC_*` vars. Do not add the service role key to production unless you run the seed script against that project from a secure environment.
+
+### Database migrations
+
+Migration files live in [`supabase/migrations/`](supabase/migrations/). **Always run them in numeric order** on a fresh database:
+
+| File | Purpose |
+| ---- | ------- |
+| `001_initial_schema.sql` | Tables (`profiles`, `drinks`, `add_ons`, `orders`, …), RLS policies, auth trigger that creates a `profiles` row for new sign-ups |
+| `002_seed_data.sql` | Sample drinks and add-ons for local/demo use |
+| `003_order_user_id.sql` | Adds `orders.user_id` and policies so signed-in customers can view their order history |
+
+**How to apply (Supabase SQL Editor):**
+
+1. Open your project in Supabase → **SQL Editor** → **New query**.
+2. Paste the full contents of `001_initial_schema.sql`, run it, and confirm success.
+3. Repeat for `002_seed_data.sql`, then `003_order_user_id.sql`.
+
+Run each file once. Re-running `001` on an existing schema will fail with “already exists” errors.
+
+**Starting over:** In Supabase → **Project Settings → General**, use **Reset database** (or create a new project), then run all three migrations again and re-run `npm run seed:admin`.
+
+**Adding a new migration:** Add `004_description.sql` (or the next number) under `supabase/migrations/`, document it in this README, and apply it through the SQL Editor on every environment (local Supabase project, production, etc.).
+
+### Admin user and roles
+
+- `npm run seed:admin` creates `admin@bloomcoffee.com` (if missing) and sets `profiles.role = 'admin'`.
+- New sign-ups via `/login` get `role = 'user'` from the `handle_new_user` trigger in `001_initial_schema.sql`.
+- Admin routes are gated in middleware; only `profiles.role = 'admin'` passes. RLS on writes uses the same `is_admin()` helper.
+
+To promote another user manually: Supabase → **Table Editor → profiles** → set `role` to `admin` for that user’s row.
+
+### Day-to-day development
+
+```bash
+npm run dev          # Next.js dev server (http://localhost:3000)
+npm run lint         # ESLint
+npm test             # Vitest (order total logic)
+npm run test:watch   # Vitest in watch mode
+npm run build        # Production build (run before deploy)
+```
+
+After changing admin menu data (drinks or add-ons), customer routes `/` and `/order` are revalidated automatically via Server Actions. If something looks stale during dev, hard-refresh the browser.
+
+**Useful paths:**
+
+- Server Actions: colocated `actions.ts` under each route in `src/app/`
+- Shared types: `src/lib/types.ts`
+- Supabase clients: `src/lib/supabase/client.ts` (browser), `server.ts` (RSC/actions)
+- Auth middleware: `src/middleware.ts`
+
+### Troubleshooting
+
+| Symptom | Likely cause | Fix |
+| ------- | ------------ | --- |
+| App crashes on load with missing env error | `.env.local` not set or dev server not restarted after editing env | Add vars from `.env.example`, restart `npm run dev` |
+| `seed:admin` fails with missing key | `SUPABASE_SERVICE_ROLE_KEY` not in `.env.local` | Copy service role key from Supabase API settings |
+| Admin login works but `/admin/*` redirects | Profile still `user` | Run `npm run seed:admin` or set `profiles.role` to `admin` |
+| Empty menu | Migrations not run or `002` skipped | Run `001` then `002` in the SQL Editor |
+| Order history empty when signed in | `003_order_user_id.sql` not applied | Run migration `003` |
+| SQL errors when re-running `001` | Schema already exists | Reset database or only run new migration files |
+
 ## Scripts
 
 | Command              | Description                    |
@@ -60,6 +155,7 @@ npm run dev
 | `npm run start`      | Start production server        |
 | `npm run lint`       | Run ESLint                     |
 | `npm test`           | Run Vitest unit tests          |
+| `npm run test:watch` | Run Vitest in watch mode       |
 | `npm run seed:admin` | Create/promote seed admin user |
 
 ## Deploy (Vercel)
